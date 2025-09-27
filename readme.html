@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Donkey Kong — pezzaliAPP</title>
+  <style>
+    :root{--bg:#0b0d14;--fg:#e9eef5;--muted:#a7b0c2;--card:#121621;--accent:#ffd24a;--link:#7cc4ff;}
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
+    .wrap{max-width:860px;margin:0 auto;padding:28px 18px}
+    h1,h2,h3{line-height:1.2;margin:22px 0 10px}
+    h1{font-size:28px}
+    h2{font-size:22px}
+    h3{font-size:18px}
+    p,li{color:var(--fg)}
+    a{color:var(--link);text-decoration:none} a:hover{text-decoration:underline}
+    code,.pill{background:var(--card);border:1px solid #232a3a;padding:2px 6px;border-radius:6px}
+    .card{background:var(--card);border:1px solid #232a3a;border-radius:12px;padding:16px;margin:18px 0}
+    ul{padding-left:20px}
+    img{max-width:100%;height:auto;border-radius:10px;border:1px solid #232a3a;background:#000}
+    .small{color:var(--muted);font-size:14px}
+    .grid{display:grid;gap:14px}
+    @media (min-width:720px){ .grid.two{grid-template-columns:1fr 1fr} }
+    hr{border:none;border-top:1px solid #232a3a;margin:24px 0}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Donkey Kong — pezzaliAPP</h1>
+    <p>Un progetto open-source ispirato al classico arcade del 1981, ricreato in <strong>JavaScript puro</strong> con un approccio a classi.
+    Giocabile come <strong>programma nativo per Laptop</strong>, e in fase di sviluppo l’adattamento per <strong>iOS e Android</strong> (smartphone e tablet) come app installabile.</p>
+    <p>👉 <a href="https://www.pezzaliAPP.com" target="_blank" rel="noopener">pezzaliAPP.com</a></p>
+
+    <hr>
+
+    <h2>🎮 Controlli attuali (Laptop)</h2>
+    <ul>
+      <li><strong>Muovi:</strong> W A S D</li>
+      <li><strong>Salto:</strong> SPACE</li>
+      <li><strong>Pausa:</strong> P</li>
+      <li><strong>Seleziona personaggio:</strong> ENTER</li>
+    </ul>
+    <p class="small">Su dispositivi mobili i controlli touch sono in fase di sviluppo.</p>
+
+    <hr>
+
+    <h2>📸 Screenshot</h2>
+    <div class="grid two">
+      <div class="card">
+        <h3>Selezione personaggio</h3>
+        <img src="https://github.com/Jspanglez/DKJS/assets/98091691/8c84f515-f3ac-410c-8819-7c78784bca29" alt="Selezione personaggio">
+      </div>
+      <div class="card">
+        <h3>Primo livello</h3>
+        <img src="https://github.com/Jspanglez/DKJS/assets/98091691/f0f4516f-4986-4425-a422-2d4b09404403" alt="Primo livello">
+      </div>
+      <div class="card">
+        <h3>Menu Pausa</h3>
+        <img src="https://github.com/Jspanglez/DKJS/assets/98091691/61e96215-7db8-4abc-8d27-829026f534a0" alt="Menu Pausa">
+      </div>
+      <div class="card">
+        <h3>Salto sopra un barile</h3>
+        <img src="https://github.com/Jspanglez/DKJS/assets/98091691/df648af7-af90-4158-a988-3af8a9f7f380" alt="Salto sopra un barile">
+      </div>
+    </div>
+
+    <hr>
+
+    <h2>🔧 Struttura del progetto</h2>
+    <ul>
+      <li><strong>Mario / Luigi</strong> → gestione giocatore</li>
+      <li><strong>DK</strong> → animazioni del gorilla</li>
+      <li><strong>Barrel</strong> → logica dei barili</li>
+      <li><strong>Platform</strong> → piattaforme e inclinazioni</li>
+      <li><strong>Ladder</strong> → scale</li>
+      <li><strong>main.js</strong> → ciclo principale del gioco e gestione stati</li>
+    </ul>
+    <p>Questo approccio a oggetti rende più semplice l’estensione futura e l’adattamento a piattaforme mobile.</p>
+
+    <hr>
+
+    <h2>🚀 Roadmap</h2>
+    <ul>
+      <li>[x] Versione funzionante per Laptop</li>
+      <li>[ ] Controlli touch per smartphone</li>
+      <li>[ ] Packaging come PWA installabile su iOS/Android</li>
+      <li>[ ] Supporto audio e vibrazione per mobile</li>
+    </ul>
+
+    <hr>
+
+    <h2>📜 Licenza</h2>
+    <p>© 2025 pezzaliAPP — Open source.<br>
+    Distribuito sotto licenza MIT: puoi studiare, modificare e condividere il codice liberamente, a patto di mantenere questa nota di licenza.</p>
+  </div>
+</body>
+</html>
