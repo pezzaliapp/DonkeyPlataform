@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css?family=Press Start 2P');
+
+body {
+  background-color: black;
+}
+
+#myCanvas {
+  display: flex;
+  justify-content: center;
+  width: 99%;
+  height: 98%;
+}
