@@ -454,4 +454,89 @@ requestAnimationFrame(update)
   addTouchControls({ layout:'arrows', jump:'Space' }); // change to {layout:'wasd'} if you prefer
   setupStartOverlay();
 })();
+// ===== START overlay + Touchpad sotto al canvas =====
+(function(){
+  // Utility per inviare eventi tastiera ai listener esistenti
+  function send(key, code, type){
+    const ev = new KeyboardEvent(type, {key, code, bubbles:true, cancelable:true});
+    document.dispatchEvent(ev); window.dispatchEvent(ev);
+  }
+  const press   = (k,c)=>send(k,c,'keydown');
+  const release = (k,c)=>send(k,c,'keyup');
 
+  // --- START overlay ---
+  (function setupStart(){
+    const ovl = document.getElementById('startOverlay');
+    const btn = document.getElementById('btnStart');
+    if (!ovl || !btn) return;
+
+    function hide(){ ovl.classList.add('hidden'); }
+    function resumeAudio(){
+      try{
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (AC){ (window._ac = window._ac || new AC()).resume?.(); }
+      }catch(e){}
+    }
+    function startBridge(){
+      resumeAudio();
+      try{
+        if (typeof gameState !== 'undefined'){
+          if (gameState === 'title' && typeof game?.startSelect === 'function'){ game.startSelect({key:'Enter'}); hide(); return; }
+          if (gameState === 'character' && typeof game?.startGame === 'function'){ game.startGame({key:'Enter'}); hide(); return; }
+        }
+      }catch(e){}
+      // Fallback universale: Enter + Space
+      press('Enter','Enter'); release('Enter','Enter');
+      press(' ','Space');     release(' ','Space');
+      hide();
+    }
+    btn.addEventListener('click', (e)=>{ e.preventDefault(); startBridge(); });
+    // Se uno usa tastiera vera, nascondi l’overlay
+    window.addEventListener('keydown', (e)=>{ if (e.code==='Enter' || e.code==='Space') hide(); });
+  })();
+
+  // --- Touchpad (Arrows/WASD + Space/Z) ---
+  (function setupTouchpad(){
+    const modeBtn = document.getElementById('btnMode');
+    function mapKey(dataK){
+      const mode = modeBtn?.dataset.mode || 'arrows';
+      if (mode === 'arrows') {
+        if (dataK === 'Space') return [' ','Space'];
+        if (dataK === 'KeyZ')  return ['z','KeyZ'];
+        return [dataK, dataK]; // Arrow*
+      }
+      // mode === 'wasd'
+      const m = { ArrowLeft:['a','KeyA'], ArrowRight:['d','KeyD'], ArrowUp:['w','KeyW'], ArrowDown:['s','KeyS'] };
+      if (dataK in m) return m[dataK];
+      if (dataK === 'Space') return [' ','Space'];
+      if (dataK === 'KeyZ')  return ['z','KeyZ'];
+      return [dataK, dataK];
+    }
+    document.querySelectorAll('.tbtn').forEach(btn=>{
+      const dataK = btn.getAttribute('data-k');
+      const down = (e)=>{ e.preventDefault(); const [k,c]=mapKey(dataK); press(k,c);   };
+      const up   = (e)=>{ e.preventDefault(); const [k,c]=mapKey(dataK); release(k,c); };
+      btn.addEventListener('touchstart', down, {passive:false});
+      btn.addEventListener('touchend',   up,   {passive:false});
+      btn.addEventListener('mousedown',  down);
+      btn.addEventListener('mouseup',    up);
+      btn.addEventListener('mouseleave', up);
+    });
+    // Toggle mappa Arrows <-> WASD
+    modeBtn?.addEventListener('click', ()=>{
+      const m = modeBtn.dataset.mode === 'arrows' ? 'wasd' : 'arrows';
+      modeBtn.dataset.mode = m;
+      modeBtn.textContent = m === 'arrows' ? '⌨️ Arrows' : '⌨️ WASD';
+    });
+
+    // Pulsanti utility
+    document.getElementById('btnPause')?.addEventListener('click', (e)=>{
+      e.preventDefault(); press(' ','Space'); release(' ','Space'); // molte logiche usano Space per pausa/continua
+    });
+    document.getElementById('btnRestart')?.addEventListener('click', (e)=>{
+      e.preventDefault();
+      if (typeof game !== 'undefined' && typeof game.restart === 'function'){ try{ game.restart(); return; }catch(_){} }
+      location.reload();
+    });
+  })();
+})();
