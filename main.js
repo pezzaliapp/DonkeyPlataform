@@ -7,6 +7,58 @@ import {Ladder} from "./Classes/Ladder.js"
 const canvas = document.getElementById("myCanvas")
 const ctx = canvas.getContext("2d")
 ctx.imageSmoothingEnabled = false
+// === iPhone responsive + touch HUD ===
+const BASE_W = 1510, BASE_H = 685;
+function setupResponsiveCanvas(){
+  const dpr = Math.max(1, window.devicePixelRatio || 1);
+  function fit(){
+    const scale = Math.min(window.innerWidth/BASE_W, window.innerHeight/BASE_H);
+    const cssW = Math.floor(BASE_W*scale);
+    const cssH = Math.floor(BASE_H*scale);
+    canvas.width  = Math.floor(cssW * dpr);
+    canvas.height = Math.floor(cssH * dpr);
+    canvas.style.width  = cssW + 'px';
+    canvas.style.height = cssH + 'px';
+    const ctx2d = canvas.getContext('2d');
+    ctx2d.setTransform(dpr,0,0,dpr,0,0);
+    ctx2d.imageSmoothingEnabled = false;
+  }
+  window.addEventListener('resize', fit, {passive:true});
+  fit();
+}
+function setupMobileControls(game){
+  const wrap = document.createElement('div');
+  wrap.className = 'hud-touch';
+  wrap.innerHTML = `
+    <button id="btnLeft">◀︎</button>
+    <button id="btnUp">▲</button>
+    <button id="btnJump">⤴︎</button>
+    <button id="btnDown">▼</button>
+    <button id="btnRight">▶︎</button>`;
+  document.body.appendChild(wrap);
+  const K = game.mario.keys;
+  const bind = (id, onDown, onUp)=>{
+    const b = document.getElementById(id);
+    const d = (e)=>{ e.preventDefault(); onDown(); };
+    const u = (e)=>{ e.preventDefault(); onUp(); };
+    b.addEventListener('touchstart', d, {passive:false});
+    b.addEventListener('touchend', u, {passive:false});
+    b.addEventListener('mousedown', (e)=>{ onDown(); });
+    b.addEventListener('mouseup',   (e)=>{ onUp(); });
+    b.addEventListener('mouseleave',(e)=>{ onUp(); });
+  };
+  bind('btnLeft', ()=>K.a.pressed=true, ()=>K.a.pressed=false);
+  bind('btnRight',()=>K.d.pressed=true, ()=>K.d.pressed=false);
+  bind('btnUp',   ()=>K.w.pressed=true, ()=>K.w.pressed=false);
+  bind('btnDown', ()=>K.s.pressed=true, ()=>K.s.pressed=false);
+  bind('btnJump', ()=>K.space.pressed=true, ()=>K.space.pressed=false);
+  // Tap canvas to advance Title -> Character -> Game
+  canvas.addEventListener('pointerdown', ()=>{
+    if (gameState === 'title') game.startSelect({key:'Enter'});
+    else if (gameState === 'character') game.startGame({key:'Enter'});
+  });
+}
+
 
 let gameState = "title"
 let character = "Mario"
@@ -319,7 +371,9 @@ function togglePause() {
     }
 }
     
-const game = new Game(canvas.width, canvas.height)
+const game = new Game(canvas.width, canvas.height);
+setupResponsiveCanvas();
+setupMobileControls(game);
 
 let previous
     
