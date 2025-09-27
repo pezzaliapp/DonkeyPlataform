@@ -1,37 +1,79 @@
 <html>
-    <head>
-        <title>Donkey Kong</title>
-        <link href="styles.css" type="text/css" rel="stylesheet">
-    
-<style>
-  html,body{margin:0;height:100%;background:#0b0d14;touch-action:none;overscroll-behavior:none}
-  .hud-touch{position:fixed;left:0;right:0;bottom:12px;display:flex;gap:10px;justify-content:center;z-index:10}
-  .hud-touch button{
-    -webkit-tap-highlight-color:transparent;
-    padding:14px 16px;border-radius:12px;border:1px solid #394050;
-    background:#1c2232;color:#e9eef5;font-weight:700;min-width:64px
-  }
-  .start-overlay{
-    position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
-    background:rgba(0,0,0,.35); z-index:20; pointer-events:auto;
-  }
-  .start-overlay.hidden{ display:none; }
-  .start-btn{
-    -webkit-tap-highlight-color:transparent;
-    font-weight:800; letter-spacing:.4px; font-size:18px;
-    padding:14px 22px; border-radius:14px; border:1px solid #394050;
-    background:#1c2232; color:#e9eef5;
-  }
-</style>
+  <head>
+    <title>Donkey Kong</title>
+    <link href="styles.css" type="text/css" rel="stylesheet">
 
-</head>
-    <body>
-        <canvas id="myCanvas" width="1510" height="685" style="position: absolute;"></canvas>
+    <!-- Stili minimi per overlay + touchpad -->
+    <style>
+      html,body{margin:0;height:100%;background:#0b0d14;touch-action:none;overscroll-behavior:none}
+      canvas{display:block;margin:0 auto;image-rendering:pixelated}
 
-<div id="startOverlay" class="start-overlay">
-  <button id="btnStart" class="start-btn">▶︎ Start</button>
-</div>
+      /* START overlay */
+      .start-overlay{
+        position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+        background:rgba(0,0,0,.35); z-index:20; pointer-events:auto;
+      }
+      .start-overlay.hidden{ display:none; }
+      .start-btn{
+        -webkit-tap-highlight-color:transparent;
+        font-weight:800; letter-spacing:.4px; font-size:18px;
+        padding:14px 22px; border-radius:14px; border:1px solid #394050;
+        background:#1c2232; color:#e9eef5;
+      }
 
-        <script type="module" src="./main.js"></script>
-    </body>
+      /* Touchpad sotto al gioco */
+      .touchpad{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:center;margin:12px auto;max-width:860px}
+      .leftpad{display:grid;grid-template-areas:'.. up ..' 'left .. right' '.. down ..';gap:8px;justify-items:center}
+      .leftpad button[data-k='ArrowUp']{grid-area:up}
+      .leftpad button[data-k='ArrowLeft']{grid-area:left}
+      .leftpad button[data-k='ArrowRight']{grid-area:right}
+      .leftpad button[data-k='ArrowDown']{grid-area:down}
+      .rightpad{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+      .row{display:flex;gap:8px;justify-content:center}
+      .tbtn,.cbtn{
+        -webkit-tap-highlight-color:transparent;
+        padding:14px 18px;border-radius:14px;border:1px solid #394050;
+        background:#1c2232;color:#e9eef5;font-weight:800;min-width:64px
+      }
+      .small{padding:10px 12px;font-weight:700;min-width:auto}
+      .bar{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:6px auto}
+      .container{max-width:1024px;margin:0 auto;padding:8px}
+    </style>
+  </head>
+
+  <body>
+    <!-- Il tuo canvas -->
+    <canvas id="myCanvas" width="1510" height="685"></canvas>
+
+    <!-- Overlay Start cliccabile -->
+    <div id="startOverlay" class="start-overlay">
+      <button id="btnStart" class="start-btn">▶︎ Start</button>
+    </div>
+
+    <!-- Touchpad fisso sotto al gioco -->
+    <div class="container">
+      <div class="bar">
+        <button id="btnPause" class="cbtn small">⏸ Pausa</button>
+        <button id="btnRestart" class="cbtn small">🔄 Restart</button>
+        <button id="btnMode" class="cbtn small" data-mode="arrows">⌨️ Arrows</button>
+      </div>
+      <div class="touchpad">
+        <div class="leftpad">
+          <button class="tbtn" data-k="ArrowUp">▲</button>
+          <button class="tbtn" data-k="ArrowLeft">◀︎</button>
+          <button class="tbtn" data-k="ArrowRight">▶︎</button>
+          <button class="tbtn" data-k="ArrowDown">▼</button>
+        </div>
+        <div class="rightpad">
+          <div class="row">
+            <button class="tbtn" data-k="Space">⤴︎ Salta</button>
+            <button class="tbtn" data-k="KeyZ">Z</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Il tuo gioco -->
+    <script type="module" src="./main.js"></script>
+  </body>
 </html>
