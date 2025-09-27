@@ -1,14 +1,22 @@
 {
   "name": "Donkey Platform — pezzaliAPP",
   "short_name": "DonkeyPlatform",
-  "description": "Platform PWA ispirato al 1981: salta, scala, evita i barili. Funziona offline.",
+  "description": "Platform PWA ispirato al 1981: salta, scala, evita i barili. Ottimizzato per iPhone.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#0f0f13",
-  "theme_color": "#0f0f13",
+  "background_color": "#0b0d14",
+  "theme_color": "#0b0d14",
   "icons": [
-    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
   ]
 }

@@ -1,4 +1,4 @@
-const CACHE = 'donkey-platform-iphone-v1-1-2';
+const CACHE = 'donkey-platform-iphone-v1';
 const ASSETS = [
   './',
   './index.html',

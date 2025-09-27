@@ -1,5 +1,3 @@
-const canvas = document.getElementById('myCanvas');
-const ctx = canvas.getContext('2d');
 import {Mario} from "./Classes/Mario.js"
 import {DK} from "./Classes/DK.js"
 import {Barrel} from "./Classes/Barrel.js"
@@ -13,37 +11,18 @@ ctx.imageSmoothingEnabled = false
 const BASE_W = 1510, BASE_H = 685;
 function setupResponsiveCanvas(){
   const dpr = Math.max(1, window.devicePixelRatio || 1);
-  function viewportH(){
-    const vv = window.visualViewport ? window.visualViewport.height : 0;
-    return Math.max(vv||0, window.innerHeight||0, document.documentElement.clientHeight||0, screen.height||0);
-  }
   function fit(){
-    const w = Math.max(320, Math.floor(window.innerWidth||document.documentElement.clientWidth||screen.width||320));
-    const h = Math.max(240, Math.floor(viewportH()));
-    const scaleW = w / BASE_W;
-    const scaleH = h / BASE_H;
-    let scale = Math.min(scaleW, scaleH);
-    if (!isFinite(scale) || scale <= 0) scale = 1;
-    const cssW = Math.floor(BASE_W * scale);
-    const cssH = Math.floor(BASE_H * scale);
-    canvas.width  = Math.max(320, Math.floor(cssW * dpr));
-    canvas.height = Math.max(240, Math.floor(cssH * dpr));
+    const scale = Math.min(window.innerWidth/BASE_W, window.innerHeight/BASE_H);
+    const cssW = Math.floor(BASE_W*scale);
+    const cssH = Math.floor(BASE_H*scale);
+    canvas.width  = Math.floor(cssW * dpr);
+    canvas.height = Math.floor(cssH * dpr);
     canvas.style.width  = cssW + 'px';
     canvas.style.height = cssH + 'px';
-    const c = canvas.getContext('2d');
-    c.setTransform(dpr,0,0,dpr,0,0);
-    c.imageSmoothingEnabled = false;
-    if (typeof game !== 'undefined' && game && typeof game.resize === 'function'){
-      try { game.resize(cssW, cssH); } catch(e){ /* optional */ }
-    }
+    const ctx2d = canvas.getContext('2d');
+    ctx2d.setTransform(dpr,0,0,dpr,0,0);
+    ctx2d.imageSmoothingEnabled = false;
   }
-  window.addEventListener('resize', fit, {passive:true});
-  window.addEventListener('orientationchange', fit, {passive:true});
-  document.addEventListener('visibilitychange', fit, {passive:true});
-  // delay to allow iOS UI to settle
-  requestAnimationFrame(()=>{ setTimeout(fit, 50); });
-  fit();
-}
   window.addEventListener('resize', fit, {passive:true});
   fit();
 }
