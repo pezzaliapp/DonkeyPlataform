@@ -1,9 +1,15 @@
-<html>
+<!DOCTYPE html>
+<html lang="it">
   <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
+    />
     <title>Donkey Kong</title>
     <link href="styles.css" type="text/css" rel="stylesheet">
 
-    <!-- Stili minimi per overlay + touchpad -->
+    <!-- Stili per overlay + touchpad -->
     <style>
       html,body{margin:0;height:100%;background:#0b0d14;touch-action:none;overscroll-behavior:none}
       canvas{display:block;margin:0 auto;image-rendering:pixelated}
@@ -42,32 +48,32 @@
   </head>
 
   <body>
-    <!-- Il tuo canvas -->
+    <!-- Canvas di gioco -->
     <canvas id="myCanvas" width="1510" height="685"></canvas>
 
     <!-- Overlay Start cliccabile -->
     <div id="startOverlay" class="start-overlay">
-      <button id="btnStart" class="start-btn">▶︎ Start</button>
+      <button id="btnStart" class="start-btn" type="button">▶︎ Start</button>
     </div>
 
     <!-- Touchpad fisso sotto al gioco -->
     <div class="container">
       <div class="bar">
-        <button id="btnPause" class="cbtn small">⏸ Pausa</button>
-        <button id="btnRestart" class="cbtn small">🔄 Restart</button>
-        <button id="btnMode" class="cbtn small" data-mode="arrows">⌨️ Arrows</button>
+        <button id="btnPause" class="cbtn small" type="button">⏸ Pausa</button>
+        <button id="btnRestart" class="cbtn small" type="button">🔄 Restart</button>
+        <button id="btnMode" class="cbtn small" data-mode="arrows" type="button">⌨️ Arrows</button>
       </div>
       <div class="touchpad">
         <div class="leftpad">
-          <button class="tbtn" data-k="ArrowUp">▲</button>
-          <button class="tbtn" data-k="ArrowLeft">◀︎</button>
-          <button class="tbtn" data-k="ArrowRight">▶︎</button>
-          <button class="tbtn" data-k="ArrowDown">▼</button>
+          <button class="tbtn" data-k="ArrowUp"    type="button">▲</button>
+          <button class="tbtn" data-k="ArrowLeft"  type="button">◀︎</button>
+          <button class="tbtn" data-k="ArrowRight" type="button">▶︎</button>
+          <button class="tbtn" data-k="ArrowDown"  type="button">▼</button>
         </div>
         <div class="rightpad">
           <div class="row">
-            <button class="tbtn" data-k="Space">⤴︎ Salta</button>
-            <button class="tbtn" data-k="KeyZ">Z</button>
+            <button class="tbtn" data-k="Space" type="button">⤴︎ Salta</button>
+            <button class="tbtn" data-k="KeyZ"  type="button">Z</button>
           </div>
         </div>
       </div>
