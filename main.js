@@ -358,9 +358,9 @@ function update(timestamp) {
 
 requestAnimationFrame(update)
 
-// ===== Touch HUD -> emula frecce/WASD + salto =====
+// ===== START overlay + Touch HUD (arrows/WASD + jump) =====
 (function(){
-  if (typeof window === 'undefined') return;
+  // --- Touch buttons that emit keyboard events ---
   function addTouchControls(options = { layout: 'arrows', jump: 'Space' }) {
     const layouts = {
       arrows: { left:['ArrowLeft','ArrowLeft'], up:['ArrowUp','ArrowUp'], down:['ArrowDown','ArrowDown'], right:['ArrowRight','ArrowRight'] },
@@ -382,8 +382,7 @@ requestAnimationFrame(update)
 
     function send(key, code, type){
       const ev = new KeyboardEvent(type, { key, code, bubbles:true, cancelable:true });
-      document.dispatchEvent(ev);
-      window.dispatchEvent(ev);
+      document.dispatchEvent(ev); window.dispatchEvent(ev);
     }
     function bind(id, pair){
       const [key, code] = pair;
@@ -405,7 +404,7 @@ requestAnimationFrame(update)
     const canvas = document.getElementById('myCanvas') || document.querySelector('canvas');
     if (canvas){
       canvas.addEventListener('pointerdown', ()=>{
-        // Enter come "Start" per avanzare negli stati
+        // Advance states that expect Enter
         const k='Enter', c='Enter';
         document.dispatchEvent(new KeyboardEvent('keydown',{key:k,code:c,bubbles:true,cancelable:true}));
         document.dispatchEvent(new KeyboardEvent('keyup',{key:k,code:c,bubbles:true,cancelable:true}));
@@ -413,33 +412,46 @@ requestAnimationFrame(update)
     }
   }
 
-  // Responsive retina fit (opzionale; chiama con la tua base)
-  function setupResponsiveCanvas(baseW=1510, baseH=685){
-    const canvas = document.getElementById('myCanvas') || document.querySelector('canvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d', {alpha:false});
-    function fit(){
-      const dpr = Math.max(1, window.devicePixelRatio || 1);
-      const w = window.innerWidth;
-      const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-      const scale = Math.min(w/baseW, vh/baseH);
-      const cssW = Math.floor(baseW*scale);
-      const cssH = Math.floor(baseH*scale);
-      canvas.width  = Math.max(320, Math.floor(cssW*dpr));
-      canvas.height = Math.max(240, Math.floor(cssH*dpr));
-      canvas.style.width  = cssW+'px';
-      canvas.style.height = cssH+'px';
-      ctx.setTransform(dpr,0,0,dpr,0,0);
-      ctx.imageSmoothingEnabled = false;
+  // --- Start overlay: click/tap acts like Enter/Space or calls your game API ---
+  function setupStartOverlay(){
+    const ovl = document.getElementById('startOverlay');
+    const btn = document.getElementById('btnStart');
+    if (!ovl || !btn) return;
+
+    function hideStart(){ ovl.classList.add('hidden'); }
+    function resumeAudioIfAny(){
+      try{
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (AC){
+          window._ac = window._ac || new AC();
+          window._ac.resume?.();
+        }
+      }catch(e){}
     }
-    window.addEventListener('resize', fit, {passive:true});
-    requestAnimationFrame(()=>setTimeout(fit,50));
-    fit();
+    function sendKey(key, code){
+      const kd = new KeyboardEvent('keydown', {key, code, bubbles:true, cancelable:true});
+      const ku = new KeyboardEvent('keyup',   {key, code, bubbles:true, cancelable:true});
+      document.dispatchEvent(kd); window.dispatchEvent(kd);
+      document.dispatchEvent(ku); window.dispatchEvent(ku);
+    }
+    function startGameBridge(){
+      resumeAudioIfAny();
+      try{
+        if (typeof gameState !== 'undefined'){
+          if (gameState === 'title' && typeof game?.startSelect === 'function'){ game.startSelect({key:'Enter'}); hideStart(); return; }
+          if (gameState === 'character' && typeof game?.startGame === 'function'){ game.startGame({key:'Enter'}); hideStart(); return; }
+        }
+      }catch(e){/* ignore and fallback */}
+      // fallback: Enter + Space
+      sendKey('Enter','Enter'); sendKey(' ','Space'); hideStart();
+    }
+    btn.addEventListener('click', (e)=>{ e.preventDefault(); startGameBridge(); });
+    // Hide overlay if real keyboard is pressed
+    window.addEventListener('keydown', (e)=>{ if (e.code==='Enter' || e.code==='Space') hideStart(); });
   }
 
-  // Attiva: layout frecce + Space (puoi cambiare in 'wasd' o jump:'Z')
-  addTouchControls({ layout:'arrows', jump:'Space' });
-  // Se vuoi/serve adattamento retina:
-  // setupResponsiveCanvas(1510, 685);
-})(); 
+  // Init
+  addTouchControls({ layout:'arrows', jump:'Space' }); // change to {layout:'wasd'} if you prefer
+  setupStartOverlay();
+})();
 
