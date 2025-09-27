@@ -1,37 +1,59 @@
-# Donkey Kong in JavaScript
+# Donkey Kong — pezzaliAPP
 
-Play [here](https://jspanglez.github.io/DKJS/).
+Un progetto open-source ispirato al classico arcade del 1981, ricreato in **JavaScript puro** con un approccio a classi.  
+Giocabile come **programma nativo per Laptop**, e in fase di sviluppo l’adattamento per **iOS e Android** (smartphone e tablet) come app installabile.
 
-> [!NOTE]
->
-> Controls:
-> 
-> Move: W A S D
-> 
-> Jump: SPACE
-> 
-> Pause: P
-> 
-> Select character: ENTER
+👉 [pezzaliAPP.com](https://www.pezzaliAPP.com)
 
+---
 
+## 🎮 Controlli attuali (Laptop)
+- **Muovi:** W A S D  
+- **Salto:** SPACE  
+- **Pausa:** P  
+- **Seleziona personaggio:** ENTER  
 
-This is my final year project for my Computer Science course at De Montford University. It is a recreation of the first level of the original Donkey Kong arcade game, built entirely using vanilla JavaScript.
+Su dispositivi mobili i controlli touch sono in fase di sviluppo.
 
-![image](https://github.com/Jspanglez/DKJS/assets/98091691/84936874-4f6e-463d-8b8d-6f905c1a3fb9)
+---
 
-The project takes an Object-oriented approach by having multiple classes called by a main class. Each class has a specific role and responsibility, contributing to the overall functionality of the game.
+## 📸 Screenshot
 
+### Selezione personaggio
 ![image](https://github.com/Jspanglez/DKJS/assets/98091691/8c84f515-f3ac-410c-8819-7c78784bca29)
-![image](https://github.com/Jspanglez/DKJS/assets/98091691/a6348a76-b6c3-4d26-b5a3-72e5a793252b)
 
-I have added Luigi as a playable character and also made a character select screen. This is something I always thought was missing from the original.
-
-## First starting the level
+### Primo livello
 ![image](https://github.com/Jspanglez/DKJS/assets/98091691/f0f4516f-4986-4425-a422-2d4b09404403)
 
-## Pause menu
+### Menu Pausa
 ![image](https://github.com/Jspanglez/DKJS/assets/98091691/61e96215-7db8-4abc-8d27-829026f534a0)
 
-## Jumping over a barrel
+### Salto sopra un barile
 ![image](https://github.com/Jspanglez/DKJS/assets/98091691/df648af7-af90-4158-a988-3af8a9f7f380)
+
+---
+
+## 🔧 Struttura del progetto
+Il gioco è organizzato in più classi JavaScript:
+- **Mario / Luigi** → gestione giocatore
+- **DK** → animazioni del gorilla
+- **Barrel** → logica dei barili
+- **Platform** → piattaforme e inclinazioni
+- **Ladder** → scale
+- **main.js** → ciclo principale del gioco e gestione stati
+
+Questo approccio a oggetti rende più semplice l’estensione futura e l’adattamento a piattaforme mobile.
+
+---
+
+## 🚀 Roadmap
+- [x] Versione funzionante per Laptop
+- [ ] Controlli touch per smartphone
+- [ ] Packaging come PWA installabile su iOS/Android
+- [ ] Supporto audio e vibrazione per mobile
+
+---
+
+## 📜 Licenza
+© 2025 pezzaliAPP — Open source.  
+Distribuito sotto licenza MIT: puoi studiare, modificare e condividere il codice liberamente, a patto di mantenere questa nota di licenza.
